@@ -52,8 +52,7 @@ const IncidentForm = ({ newIncident, setNewIncident, handleSubmitIncident }) => 
                 Ubicación detectada automáticamente
               </span>
             </div>
-          </div>
-          <div className="flex items-center gap-2">
+          </div>          <div className="flex items-center gap-2">
             <input
               type="checkbox"
               id="anonymous"
@@ -65,6 +64,20 @@ const IncidentForm = ({ newIncident, setNewIncident, handleSubmitIncident }) => 
               Enviar de forma anónima
             </label>
           </div>
+          {!newIncident.anonymous && (
+            <div>
+              <label className="block text-base font-semibold text-gray-700 mb-2">
+                Tu nombre <span className="text-gray-400 text-sm">(Opcional)</span>
+              </label>
+              <input
+                type="text"
+                value={newIncident.userName || ''}
+                onChange={(e) => setNewIncident(prev => ({ ...prev, userName: e.target.value }))}
+                className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-red-400 bg-gray-50 text-gray-700 text-base"
+                placeholder="Ingresa tu nombre (opcional)"
+              />
+            </div>
+          )}
           <button
             onClick={handleSubmitIncident}
             disabled={!newIncident.type}

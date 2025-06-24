@@ -10,6 +10,15 @@ module.exports = {
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js', '.jsx'],
+    fallback: {
+      "stream": require.resolve("stream-browserify"),
+      "https": require.resolve("https-browserify"),
+      "util": require.resolve("util"),
+      "zlib": require.resolve("browserify-zlib"),
+      "crypto": require.resolve("crypto-browserify"),
+      "url": require.resolve("url"),
+      "assert": require.resolve("assert"),
+    }
   },
   module: {
     rules: [

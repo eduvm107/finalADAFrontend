@@ -35,9 +35,15 @@ export const findNearestEntities = (incidentLat, incidentLng, k = 3) => {
 export const getHotZones = (incidents) => {
   const zones = {};
   incidents.forEach(incident => {
-    // Agrupa incidentes por una "zona" aproximada (redondeando lat/lng)
-    const zoneKey = `${Math.floor(incident.location.lat * 100)}-${Math.floor(incident.location.lng * 100)}`;
-    zones[zoneKey] = (zones[zoneKey] || 0) + 1;
+    // Manejar tanto el formato del backend (lat, lng) como el formato local (location.lat, location.lng)
+    const lat = incident.lat || incident.location?.lat;
+    const lng = incident.lng || incident.location?.lng;
+    
+    if (lat !== undefined && lng !== undefined) {
+      // Agrupa incidentes por una "zona" aproximada (redondeando lat/lng)
+      const zoneKey = `${Math.floor(lat * 100)}-${Math.floor(lng * 100)}`;
+      zones[zoneKey] = (zones[zoneKey] || 0) + 1;
+    }
   });
   // Devuelve solo las zonas con 2 o más incidentes
   return Object.entries(zones)
@@ -58,8 +64,8 @@ export const getFilteredIncidents = (incidents, filterType, searchTerm) => {
   }
   if (searchTerm) {
     filtered = filtered.filter(incident => 
-      incident.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      incident.type.toLowerCase().includes(searchTerm.toLowerCase())
+      (incident.description && incident.description.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (incident.type && incident.type.toLowerCase().includes(searchTerm.toLowerCase()))
     );
   }
   // Ordena los incidentes por fecha descendente (más recientes primero)

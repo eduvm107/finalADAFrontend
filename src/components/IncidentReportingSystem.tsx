@@ -8,6 +8,7 @@ import EmergencyContacts from './EmergencyContacts';
 import AnalyticsPanel from './AnalyticsPanel';
 import { emergencyEntities } from '../utils/data';
 import { findNearestEntities, getHotZones, getFilteredIncidents } from '../utils/algorithms';
+import { createIncident, getIncidents } from '../api/endpoints';
 
 type Incident = {
   id: number;
@@ -16,44 +17,73 @@ type Incident = {
   location: { lat: number; lng: number };
   anonymous: boolean;
   timestamp: Date;
+  userId?: number;
+  userName?: string;
 };
 
 const IncidentReportingSystem = () => {
   const [activeTab, setActiveTab] = useState('map');
-  const [incidents, setIncidents] = useState<Incident[]>([]);
-  const [newIncident, setNewIncident] = useState<Omit<Incident, 'id'>>({
+  const [incidents, setIncidents] = useState<Incident[]>([]);  const [newIncident, setNewIncident] = useState<Omit<Incident, 'id'>>({
     type: '',
     description: '',
     location: { lat: -12.0464, lng: -77.0428 },
     anonymous: false,
-    timestamp: new Date()
+    timestamp: new Date(),
+    userId: 1, // Por defecto usuario 1, puedes cambiarlo por un sistema de autenticación
+    userName: '' // Campo opcional para el nombre del usuario
   });
   const [nearestEntitiesState, setNearestEntities] = useState<any[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('all');
-
-  const handleSubmitIncident = () => {
+  const handleSubmitIncident = async () => {
     if (!newIncident.type) return;
-    const incident = {
-      ...newIncident,
-      id: Date.now(),
-      timestamp: new Date()
-    };
-    setIncidents(prev => [...prev, incident]);
-    const nearest = findNearestEntities(
-      newIncident.location.lat,
-      newIncident.location.lng,
-      3
-    );
-    setNearestEntities(nearest);
-    setNewIncident({
-      type: '',
-      description: '',
-      location: { lat: -12.0464, lng: -77.0428 },
-      anonymous: false,
-      timestamp: new Date()
-    });
-    setActiveTab('entities');
+    
+    try {
+      // Preparar los datos para el backend según el formato esperado
+      const incidentData = {
+        type: newIncident.type,
+        description: newIncident.description || '',
+        lat: newIncident.location.lat,
+        lng: newIncident.location.lng,
+        anonymous: newIncident.anonymous,
+        timestamp: new Date().toISOString(),
+        userId: newIncident.anonymous ? null : (newIncident.userId || 1)
+      };
+
+      // Enviar al backend
+      await createIncident(incidentData);
+      
+      // Actualizar la lista local de incidentes
+      const updatedIncidents = await getIncidents();
+      setIncidents(updatedIncidents);
+      
+      // Encontrar entidades cercanas
+      const nearest = findNearestEntities(
+        newIncident.location.lat,
+        newIncident.location.lng,
+        3
+      );
+      setNearestEntities(nearest);
+      
+      // Resetear el formulario
+      setNewIncident({
+        type: '',
+        description: '',
+        location: { lat: -12.0464, lng: -77.0428 },
+        anonymous: false,
+        timestamp: new Date(),
+        userId: 1,
+        userName: ''
+      });
+      
+      // Cambiar a la pestaña de entidades cercanas
+      setActiveTab('entities');
+      
+      alert('Incidente reportado exitosamente');
+    } catch (error) {
+      console.error('Error al reportar el incidente:', error);
+      alert('Hubo un problema al reportar el incidente. Por favor, inténtalo de nuevo.');
+    }
   };
 
   const hotZones = getHotZones(incidents);
