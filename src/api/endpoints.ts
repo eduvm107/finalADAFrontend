@@ -52,15 +52,32 @@ export const deleteEmergencyContact = async (id: number) => {
 // Función para obtener todos los incidentes
 export const getIncidents = async () => {
   try {
-    console.log('Intentando obtener incidentes desde:', `${BASE_URL}/Incidents`);
+    console.log('🔗 Intentando obtener incidentes desde:', `${BASE_URL}/Incidents`);
     const response = await axios.get(`${BASE_URL}/Incidents`);
-    console.log('Respuesta exitosa:', response.data);
-    return response.data;
+    console.log('✅ Respuesta completa del backend:', response);
+    console.log('📊 Datos de incidentes:', response.data);
+    console.log('🔢 Cantidad de incidentes:', response.data?.length || 0);
+    
+    // Transformar los datos del backend al formato esperado por el frontend
+    const transformedIncidents = response.data.map((incident: any) => ({
+      id: incident.incidentId || incident.id,
+      type: incident.type,
+      description: incident.description,
+      // El backend usa lat/lng directamente, no location.lat/lng
+      lat: incident.lat,
+      lng: incident.lng,
+      anonymous: incident.anonymous,
+      timestamp: incident.timestamp,
+      userId: incident.userId
+    }));
+    
+    console.log('🔄 Incidentes transformados:', transformedIncidents);
+    return transformedIncidents;
   } catch (error) {
-    console.error('Error detallado al obtener los incidentes:', error);
-    console.error('Error response:', error.response?.data);
-    console.error('Error status:', error.response?.status);
-    console.error('Error message:', error.message);
+    console.error('❌ Error detallado al obtener los incidentes:', error);
+    console.error('🔍 Error response:', error.response?.data);
+    console.error('📊 Error status:', error.response?.status);
+    console.error('📝 Error message:', error.message);
     throw error;
   }
 };

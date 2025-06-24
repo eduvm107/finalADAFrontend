@@ -136,6 +136,32 @@ nav button[aria-current="page"], nav button.active {
   }
 }
 
+/* Estilos para el mapa */
+.leaflet-container {
+  z-index: 1;
+}
+
+.leaflet-popup-content h4 {
+  color: #d90429 !important;
+  margin: 0 0 8px 0 !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+}
+
+.leaflet-popup-content p {
+  margin: 4px 0 !important;
+  line-height: 1.4 !important;
+}
+
+.leaflet-popup-content-wrapper {
+  border-radius: 12px !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+}
+
+.leaflet-popup-tip {
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+}
+
 /* Animaciones sutiles */
 .fade-in {
   animation: fadeIn 0.7s ease;
