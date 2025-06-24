@@ -1,8 +1,15 @@
 import React from 'react';
-import { MapPin } from 'lucide-react';
+import { MapPin, RefreshCw, AlertCircle } from 'lucide-react';
 
 // Componente para el formulario de reporte de incidentes
-const IncidentForm = ({ newIncident, setNewIncident, handleSubmitIncident }) => {
+const IncidentForm = ({ 
+  newIncident, 
+  setNewIncident, 
+  handleSubmitIncident, 
+  locationLoading = false, 
+  locationError = null, 
+  refreshLocation 
+}) => {
   return (
     <div className="max-w-2xl mx-auto">
       <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
@@ -38,21 +45,70 @@ const IncidentForm = ({ newIncident, setNewIncident, handleSubmitIncident }) => 
               className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-red-400 bg-gray-50 text-gray-700 text-base resize-none"
               placeholder="Describe brevemente el incidente..."
             />
-          </div>
-          <div>
+          </div>          <div>
             <label className="block text-base font-semibold text-gray-700 mb-2">
               Ubicación
             </label>
-            <div className="flex items-center space-x-3 p-4 bg-green-50 rounded-lg border border-green-200">
-              <MapPin className="w-5 h-5 text-green-600" />
-              <span className="text-base text-gray-700 font-medium">
-                GPS: {newIncident.location.lat.toFixed(4)}, {newIncident.location.lng.toFixed(4)}
-              </span>
-              <span className="text-xs text-green-700 bg-green-100 px-2 py-1 rounded-full font-semibold">
-                Ubicación detectada automáticamente
-              </span>
+            <div className="space-y-3">
+              {/* Mostrar estado de la geolocalización */}
+              {locationLoading ? (
+                <div className="flex items-center space-x-3 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                  <RefreshCw className="w-5 h-5 text-blue-600 animate-spin" />
+                  <span className="text-base text-gray-700 font-medium">
+                    Obteniendo ubicación...
+                  </span>
+                </div>
+              ) : locationError ? (
+                <div className="space-y-3">
+                  <div className="flex items-center space-x-3 p-4 bg-red-50 rounded-lg border border-red-200">
+                    <AlertCircle className="w-5 h-5 text-red-600" />
+                    <span className="text-base text-red-700 font-medium">
+                      {locationError}
+                    </span>
+                  </div>
+                  <div className="flex items-center space-x-3 p-4 bg-yellow-50 rounded-lg border border-yellow-200">
+                    <MapPin className="w-5 h-5 text-yellow-600" />
+                    <span className="text-base text-gray-700 font-medium">
+                      Usando ubicación por defecto: {newIncident.location.lat.toFixed(4)}, {newIncident.location.lng.toFixed(4)}
+                    </span>
+                    <span className="text-xs text-yellow-700 bg-yellow-100 px-2 py-1 rounded-full font-semibold">
+                      Lima, Perú
+                    </span>
+                  </div>
+                  {refreshLocation && (
+                    <button
+                      type="button"
+                      onClick={refreshLocation}
+                      className="flex items-center space-x-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                    >
+                      <RefreshCw className="w-4 h-4" />
+                      <span>Intentar obtener ubicación nuevamente</span>
+                    </button>
+                  )}
+                </div>
+              ) : (
+                <div className="flex items-center space-x-3 p-4 bg-green-50 rounded-lg border border-green-200">
+                  <MapPin className="w-5 h-5 text-green-600" />
+                  <span className="text-base text-gray-700 font-medium">
+                    GPS: {newIncident.location.lat.toFixed(4)}, {newIncident.location.lng.toFixed(4)}
+                  </span>
+                  <span className="text-xs text-green-700 bg-green-100 px-2 py-1 rounded-full font-semibold">
+                    Ubicación actual detectada
+                  </span>
+                  {refreshLocation && (
+                    <button
+                      type="button"
+                      onClick={refreshLocation}
+                      className="ml-auto flex items-center space-x-1 px-3 py-1 bg-green-100 text-green-700 rounded-md hover:bg-green-200 transition-colors text-sm"
+                    >
+                      <RefreshCw className="w-3 h-3" />
+                      <span>Actualizar</span>
+                    </button>
+                  )}
+                </div>
+              )}
             </div>
-          </div>          <div className="flex items-center gap-2">
+          </div><div className="flex items-center gap-2">
             <input
               type="checkbox"
               id="anonymous"
