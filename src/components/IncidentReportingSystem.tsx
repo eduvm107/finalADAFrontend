@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { AlertTriangle, MapPin, Plus, Navigation, MessageCircle, Phone, Users } from 'lucide-react';
+import { AlertTriangle, MapPin, Plus, Navigation, MessageCircle, Phone, Users, Settings } from 'lucide-react';
 import IncidentForm from './IncidentForm';
 import IncidentMap from './IncidentMap';
 import NearestEntities from './NearestEntities';
@@ -7,6 +7,7 @@ import IncidentForum from './IncidentForum';
 import EmergencyContacts from './EmergencyContacts';
 import AnalyticsPanel from './AnalyticsPanel';
 import GeolocationTest from './GeolocationTest';
+import EmergencyEntitiesAdmin from './EmergencyEntitiesAdmin';
 import { emergencyEntities } from '../utils/data';
 import { findNearestEntities, getHotZones, getFilteredIncidents } from '../utils/algorithms';
 import { createIncident, getIncidents } from '../api/endpoints';
@@ -42,6 +43,10 @@ const IncidentReportingSystem = () => {
   const [nearestEntitiesState, setNearestEntities] = useState<any[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('all');
+  
+  // Estado para el último incidente reportado (para sugerir entidades)
+  const [lastIncidentType, setLastIncidentType] = useState<string>('');
+  const [lastIncidentLocation, setLastIncidentLocation] = useState<{ lat: number; lng: number } | null>(null);
 
   // Actualizar la ubicación del nuevo incidente cuando se obtenga la geolocalización
   useEffect(() => {
@@ -164,38 +169,44 @@ const IncidentReportingSystem = () => {
         userId: newIncident.anonymous ? null : (newIncident.userId || 1)
       };
 
+      console.log('📤 Enviando incidente al backend:', incidentData);
+
       // Enviar al backend
       await createIncident(incidentData);
+      
+      // Guardar información del incidente para sugerir entidades
+      setLastIncidentType(newIncident.type);
+      setLastIncidentLocation({
+        lat: newIncident.location.lat,
+        lng: newIncident.location.lng
+      });
       
       // Actualizar la lista local de incidentes
       const updatedIncidents = await getIncidents();
       setIncidents(updatedIncidents);
       
-      // Encontrar entidades cercanas
-      const nearest = findNearestEntities(
-        newIncident.location.lat,
-        newIncident.location.lng,
-        3
-      );
-      setNearestEntities(nearest);
+      console.log('🎯 Buscando entidades de emergencia cercanas...');
+      console.log(`📍 Ubicación: ${newIncident.location.lat}, ${newIncident.location.lng}`);
+      console.log(`🚨 Tipo de incidente: ${newIncident.type}`);
       
-      // Resetear el formulario
+      // Resetear el formulario pero mantener la ubicación actual
+      const currentLocation = { lat: newIncident.location.lat, lng: newIncident.location.lng };
       setNewIncident({
         type: '',
         description: '',
-        location: { lat: -12.0464, lng: -77.0428 },
+        location: currentLocation, // Mantener la ubicación actual
         anonymous: false,
         timestamp: new Date(),
         userId: 1,
         userName: ''
       });
       
-      // Cambiar a la pestaña de entidades cercanas
+      // Cambiar a la pestaña de entidades cercanas para mostrar las sugerencias
       setActiveTab('entities');
       
-      alert('Incidente reportado exitosamente');
+      alert('✅ Incidente reportado exitosamente.\n🎯 Se han encontrado entidades de emergencia cercanas.');
     } catch (error) {
-      console.error('Error al reportar el incidente:', error);
+      console.error('❌ Error al reportar el incidente:', error);
       alert('Hubo un problema al reportar el incidente. Por favor, inténtalo de nuevo.');
     }
   };
@@ -230,7 +241,8 @@ const IncidentReportingSystem = () => {
               { id: 'entities', label: 'Entidades Cercanas', icon: Navigation },
               { id: 'forum', label: 'Foro de Reportes', icon: MessageCircle },
               { id: 'contacts', label: 'Contactos de Emergencia', icon: Phone },
-              { id: 'analytics', label: 'Análisis de Zonas', icon: Users }            ].map(({ id, label, icon: Icon }) => (
+              { id: 'analytics', label: 'Análisis de Zonas', icon: Users },
+              { id: 'admin', label: 'Administrar Entidades', icon: Settings }            ].map(({ id, label, icon: Icon }) => (
               <button
                 key={id}
                 onClick={() => setActiveTab(id)}
@@ -271,7 +283,10 @@ const IncidentReportingSystem = () => {
           />
         )}
         {activeTab === 'entities' && (
-          <NearestEntities nearestEntities={nearestEntitiesState} />
+          <NearestEntities 
+            lastIncidentType={lastIncidentType}
+            lastIncidentLocation={lastIncidentLocation}
+          />
         )}
         {activeTab === 'forum' && (
           <IncidentForum
@@ -292,6 +307,7 @@ const IncidentReportingSystem = () => {
             hotZones={hotZones}
           />
         )}
+        {activeTab === 'admin' && <EmergencyEntitiesAdmin />}
         {activeTab === 'geolocation-test' && <GeolocationTest />}
       </main>
     </div>
