@@ -1,9 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import { MapPin, Phone, Clock, AlertTriangle, Users, Search, Filter, Plus, Navigation, Shield, Flame, Heart, Home, MessageCircle } from 'lucide-react';
 
+// Definición de tipos
+interface Incident {
+  id: number;
+  type: string;
+  description: string;
+  location: { lat: number; lng: number };
+  anonymous: boolean;
+  timestamp: Date;
+}
+
+interface Entity {
+  id: number;
+  name: string;
+  type: string;
+  lat: number;
+  lng: number;
+  phone: string;
+  address: string;
+  distance?: number;
+}
+
 const IncidentReportingSystem = () => {
   const [activeTab, setActiveTab] = useState('map');
-  const [incidents, setIncidents] = useState([]);
+  const [incidents, setIncidents] = useState<Incident[]>([]);
   const [newIncident, setNewIncident] = useState({
     type: '',
     description: '',
@@ -11,7 +32,7 @@ const IncidentReportingSystem = () => {
     anonymous: false,
     timestamp: new Date()
   });
-  const [nearestEntities, setNearestEntities] = useState([]);
+  const [nearestEntities, setNearestEntities] = useState<Entity[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('all');
 
@@ -71,7 +92,7 @@ const IncidentReportingSystem = () => {
 
   // Algoritmo de clustering simple para identificar zonas calientes
   const getHotZones = () => {
-    const zones = {};
+    const zones: Record<string, number> = {};
     incidents.forEach(incident => {
       const zoneKey = `${Math.floor(incident.location.lat * 100)}-${Math.floor(incident.location.lng * 100)}`;
       zones[zoneKey] = (zones[zoneKey] || 0) + 1;
@@ -127,19 +148,19 @@ const IncidentReportingSystem = () => {
   // Algoritmo de búsqueda y filtrado
   const getFilteredIncidents = () => {
     let filtered = incidents;
-    
+
     if (filterType !== 'all') {
       filtered = filtered.filter(incident => incident.type === filterType);
     }
-    
+
     if (searchTerm) {
       filtered = filtered.filter(incident => 
         incident.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
         incident.type.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
-    
-    return filtered.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+    return filtered.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
   };
 
   const getIncidentIcon = (type) => {
@@ -165,6 +186,7 @@ const IncidentReportingSystem = () => {
   };
 
   const hotZones = getHotZones();
+  const nearestDistance = nearestEntities.length > 0 ? nearestEntities[0]?.distance?.toFixed(1) || '0.0' : '0.0';
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -379,7 +401,7 @@ const IncidentReportingSystem = () => {
                           <div>
                             <h3 className="font-medium text-gray-900">{entity.name}</h3>
                             <p className="text-sm text-gray-600">{entity.address}</p>
-                            <p className="text-xs text-gray-500">Distancia: {entity.distance.toFixed(2)} km</p>
+                            <p className="text-xs text-gray-500">Distancia: {entity.distance?.toFixed(2)} km</p>
                           </div>
                         </div>
                         <div className="flex items-center space-x-2">
@@ -639,7 +661,7 @@ const IncidentReportingSystem = () => {
                 <div className="space-y-4">
                   <div className="text-center">
                     <div className="text-3xl font-bold text-green-600">
-                      {nearestEntities.length > 0 ? nearestEntities[0]?.distance.toFixed(1) : '0.0'}
+                      {nearestEntities.length > 0 ? nearestEntities[0]?.distance?.toFixed(1) : '0.0'}
                     </div>
                     <div className="text-sm text-gray-600">km promedio</div>
                     <div className="text-xs text-gray-500">a la entidad más cercana</div>

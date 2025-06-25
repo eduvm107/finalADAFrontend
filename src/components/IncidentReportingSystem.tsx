@@ -1,3 +1,4 @@
+// Importaciones necesarias para el componente
 import React, { useState } from 'react';
 import { AlertTriangle, MapPin, Plus, Navigation, MessageCircle, Phone, Users } from 'lucide-react';
 import IncidentForm from './IncidentForm';
@@ -10,6 +11,7 @@ import { emergencyEntities } from '../utils/data';
 import { findNearestEntities, getHotZones, getFilteredIncidents } from '../utils/algorithms';
 import { createIncident, getIncidents } from '../api/endpoints';
 
+// Definición del tipo de datos para un incidente
 type Incident = {
   id: number;
   type: string;
@@ -21,9 +23,12 @@ type Incident = {
   userName?: string;
 };
 
+// Componente principal del sistema de reporte de incidentes
 const IncidentReportingSystem = () => {
-  const [activeTab, setActiveTab] = useState('map');
-  const [incidents, setIncidents] = useState<Incident[]>([]);  const [newIncident, setNewIncident] = useState<Omit<Incident, 'id'>>({
+  // Estados del componente
+  const [activeTab, setActiveTab] = useState('map'); // Pestaña activa
+  const [incidents, setIncidents] = useState<Incident[]>([]); // Lista de incidentes
+  const [newIncident, setNewIncident] = useState<Omit<Incident, 'id'>>({
     type: '',
     description: '',
     location: { lat: -12.0464, lng: -77.0428 },
@@ -32,9 +37,11 @@ const IncidentReportingSystem = () => {
     userId: 1, // Por defecto usuario 1, puedes cambiarlo por un sistema de autenticación
     userName: '' // Campo opcional para el nombre del usuario
   });
-  const [nearestEntitiesState, setNearestEntities] = useState<any[]>([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filterType, setFilterType] = useState('all');
+  const [nearestEntitiesState, setNearestEntities] = useState<any[]>([]); // Entidades cercanas
+  const [searchTerm, setSearchTerm] = useState(''); // Término de búsqueda
+  const [filterType, setFilterType] = useState('all'); // Filtro de tipo de incidente
+
+  // Función para manejar el envío de un nuevo incidente
   const handleSubmitIncident = async () => {
     if (!newIncident.type) return;
     
@@ -86,11 +93,13 @@ const IncidentReportingSystem = () => {
     }
   };
 
-  const hotZones = getHotZones(incidents);
-  const filteredIncidents = () => getFilteredIncidents(incidents, filterType, searchTerm);
+  // Variables derivadas
+  const hotZones = getHotZones(incidents); // Zonas calientes
+  const filteredIncidents = () => getFilteredIncidents(incidents, filterType, searchTerm); // Incidentes filtrados
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Encabezado del sistema */}
       <header className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
@@ -107,16 +116,43 @@ const IncidentReportingSystem = () => {
           </div>
         </div>
       </header>
+
+      {/* Navegación entre pestañas */}
       <nav className="bg-white border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex space-x-8">
+            {/* Definición de las pestañas y su renderizado dinámico */}
             {[
-              { id: 'map', label: 'Mapa de Incidentes', icon: MapPin },
-              { id: 'report', label: 'Reportar Incidente', icon: Plus },
-              { id: 'entities', label: 'Entidades Cercanas', icon: Navigation },
-              { id: 'forum', label: 'Foro de Reportes', icon: MessageCircle },
-              { id: 'contacts', label: 'Contactos de Emergencia', icon: Phone },
-              { id: 'analytics', label: 'Análisis de Zonas', icon: Users }
+              {
+                id: 'map',
+                label: 'Mapa de Incidentes',
+                icon: MapPin
+              },
+              {
+                id: 'report',
+                label: 'Reportar Incidente',
+                icon: Plus
+              },
+              {
+                id: 'entities',
+                label: 'Entidades Cercanas',
+                icon: Navigation
+              },
+              {
+                id: 'forum',
+                label: 'Foro de Reportes',
+                icon: MessageCircle
+              },
+              {
+                id: 'contacts',
+                label: 'Contactos de Emergencia',
+                icon: Phone
+              },
+              {
+                id: 'analytics',
+                label: 'Análisis de Zonas',
+                icon: Users
+              }
             ].map(({ id, label, icon: Icon }) => (
               <button
                 key={id}
@@ -134,7 +170,10 @@ const IncidentReportingSystem = () => {
           </div>
         </div>
       </nav>
+
+      {/* Contenido principal */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Renderizar el contenido según la pestaña activa */}
         {activeTab === 'map' && <IncidentMap incidents={incidents} />}
         {activeTab === 'report' && (
           <IncidentForm
