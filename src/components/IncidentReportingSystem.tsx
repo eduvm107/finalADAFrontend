@@ -232,9 +232,11 @@ const IncidentReportingSystem = () => {
           </div>
         </div>
       </header>
-      <nav className="bg-white border-b">
+      
+      {/* Barra de navegación moderna estilo píldora */}
+      <nav className="bg-gradient-to-r from-gray-50 to-blue-50 border-b border-gray-200 py-4">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex space-x-8">
+          <div className="flex flex-wrap gap-2 justify-center">
             {[
               { id: 'map', label: 'Mapa de Incidentes', icon: MapPin },
               { id: 'report', label: 'Reportar Incidente', icon: Plus },
@@ -242,37 +244,61 @@ const IncidentReportingSystem = () => {
               { id: 'forum', label: 'Foro de Reportes', icon: MessageCircle },
               { id: 'contacts', label: 'Contactos de Emergencia', icon: Phone },
               { id: 'analytics', label: 'Análisis de Zonas', icon: Users },
-              { id: 'admin', label: 'Administrar Entidades', icon: Settings }            ].map(({ id, label, icon: Icon }) => (
+              { id: 'admin', label: 'Administrar Entidades', icon: Settings }
+            ].map(({ id, label, icon: Icon }) => (
               <button
                 key={id}
                 onClick={() => setActiveTab(id)}
-                className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm ${
+                className={`flex items-center space-x-2 px-4 py-2 rounded-full font-medium text-sm transition-all duration-300 transform hover:scale-105 ${
                   activeTab === id
-                    ? 'border-red-500 text-red-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    ? 'bg-gradient-to-r from-red-500 to-orange-500 text-white shadow-lg shadow-red-500/30'
+                    : 'bg-white text-gray-600 hover:bg-gray-100 hover:text-gray-800 shadow-md hover:shadow-lg border border-gray-200'
                 }`}
               >
                 <Icon className="w-4 h-4" />
-                <span>{label}</span>
+                <span className="whitespace-nowrap">{label}</span>
               </button>
             ))}
-            {/* Botón temporal para pruebas */}
+            {/* Botón temporal para pruebas GPS */}
             <button
               onClick={() => setActiveTab('geolocation-test')}
-              className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm ${
+              className={`flex items-center space-x-2 px-4 py-2 rounded-full font-medium text-sm transition-all duration-300 transform hover:scale-105 ${
                 activeTab === 'geolocation-test'
-                  ? 'border-red-500 text-red-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  ? 'bg-gradient-to-r from-green-500 to-teal-500 text-white shadow-lg shadow-green-500/30'
+                  : 'bg-white text-gray-600 hover:bg-gray-100 hover:text-gray-800 shadow-md hover:shadow-lg border border-gray-200'
               }`}
             >
               <MapPin className="w-4 h-4" />
-              <span>Prueba GPS</span>
+              <span className="whitespace-nowrap">Prueba GPS</span>
             </button>
           </div>
         </div>
       </nav>
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {activeTab === 'map' && <IncidentMap incidents={incidents} />}        {activeTab === 'report' && (
+        {/* Sección del Mapa de Incidentes con imagen de encabezado */}
+        {activeTab === 'map' && (
+          <div className="space-y-6">
+            {/* Imagen de encabezado para el mapa de incidentes */}
+            <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+              <img 
+                src="https://picsum.photos/800/400?random=1" 
+                alt="Servicios de Emergencia" 
+                className="w-full h-64 md:h-80 object-cover"
+                onLoad={(e) => {
+                  console.log('✅ Imagen cargada correctamente');
+                }}
+                onError={(e) => {
+                  console.log('❌ Error al cargar imagen');
+                  // Intentar con otra imagen
+                  e.currentTarget.src = "https://via.placeholder.com/800x400/4F46E5/FFFFFF?text=Servicios+de+Emergencia";
+                }}
+              />
+            </div>
+            
+            {/* Componente del mapa */}
+            <IncidentMap incidents={incidents} />
+          </div>
+        )}        {activeTab === 'report' && (
           <IncidentForm
             newIncident={newIncident}
             setNewIncident={setNewIncident}
@@ -282,11 +308,55 @@ const IncidentReportingSystem = () => {
             refreshLocation={refreshLocation}
           />
         )}
+        {/* Sección de Entidades Cercanas con imagen de encabezado */}
         {activeTab === 'entities' && (
-          <NearestEntities 
-            lastIncidentType={lastIncidentType}
-            lastIncidentLocation={lastIncidentLocation}
-          />
+          <div className="space-y-6">
+            {/* Imagen de encabezado para entidades de emergencia */}
+            <div className="relative bg-white rounded-lg shadow-lg overflow-hidden">
+              <div className="relative h-64 md:h-80">
+                <img 
+                  src="https://picsum.photos/800/400?random=2" 
+                  alt="Entidades de Emergencia" 
+                  className="w-full h-full object-cover"
+                  onLoad={(e) => {
+                    console.log('✅ Imagen de entidades cargada correctamente');
+                  }}
+                  onError={(e) => {
+                    console.log('❌ Error al cargar imagen de entidades');
+                    // Intentar con otra imagen
+                    e.currentTarget.src = "https://via.placeholder.com/800x400/DC2626/FFFFFF?text=Entidades+de+Emergencia";
+                  }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-blue-900/70 via-blue-600/30 to-transparent"></div>
+                <div className="absolute bottom-0 left-0 right-0 p-6">
+                  <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">
+                    🚑 Entidades de Emergencia Cercanas
+                  </h2>
+                  <p className="text-white/90 text-lg">
+                    Algoritmo K-Nearest Neighbors para encontrar ayuda rápida
+                  </p>
+                  <div className="flex items-center mt-3 space-x-4">
+                    <div className="bg-white/20 backdrop-blur-sm rounded-full px-4 py-2">
+                      <span className="text-white font-medium">
+                        🚑 Servicios de Emergencia
+                      </span>
+                    </div>
+                    <div className="bg-white/20 backdrop-blur-sm rounded-full px-4 py-2">
+                      <span className="text-white font-medium">
+                        📍 Búsqueda Inteligente
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Componente de entidades cercanas */}
+            <NearestEntities 
+              lastIncidentType={lastIncidentType}
+              lastIncidentLocation={lastIncidentLocation}
+            />
+          </div>
         )}
         {activeTab === 'forum' && (
           <IncidentForum

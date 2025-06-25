@@ -512,3 +512,100 @@ html, body {
     gap: 1.5rem;
   }
 }
+
+/* Estilos para la navegación moderna estilo píldora */
+.nav-pill-button {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-pill-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transition: left 0.5s;
+}
+
+.nav-pill-button:hover::before {
+  left: 100%;
+}
+
+.nav-pill-active {
+  animation: pulse-glow-nav 2s ease-in-out infinite alternate;
+}
+
+@keyframes pulse-glow-nav {
+  0% {
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+  }
+  100% {
+    box-shadow: 0 6px 25px rgba(239, 68, 68, 0.5), 0 0 30px rgba(239, 68, 68, 0.3);
+  }
+}
+
+/* Navegación responsiva */
+@media (max-width: 768px) {
+  nav .flex-wrap {
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+  }
+  
+  nav .flex-wrap::-webkit-scrollbar {
+    height: 4px;
+  }
+  
+  nav .flex-wrap::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+  }
+  
+  nav .flex-wrap::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 10px;
+  }
+  
+  nav .flex-wrap::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+  }
+}
+
+/* Efectos de hover mejorados para la navegación */
+.nav-button-hover {
+  transition: all 0.3s ease;
+}
+
+.nav-button-hover:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Gradiente animado para botones activos */
+.nav-active-gradient {
+  background: linear-gradient(-45deg, #ee7724, #d8363a, #dd3675, #b44593);
+  background-size: 400% 400%;
+  animation: gradient-shift 4s ease infinite;
+}
+
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
