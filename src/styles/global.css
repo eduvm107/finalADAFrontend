@@ -16,11 +16,8 @@ body {
 }
 
 #root {
-  flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
   min-height: 100vh;
   background-image: none !important;
   background: transparent !important;
@@ -832,4 +829,96 @@ nav {
 
 main {
   background-image: none !important;
+}
+
+/* Estilos forzados para el header del sistema de reportes */
+.header-rojo {
+  background-color: #dc2626 !important;
+  background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+  color: #ffffff !important;
+  padding: 2rem 1rem !important;
+  text-align: center !important;
+}
+
+.nav-negro {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+.btn-nav-activo {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border: 2px solid #ffffff !important;
+}
+
+.btn-nav-inactivo {
+  background-color: transparent !important;
+  color: #ffffff !important;
+  border: 2px solid #666666 !important;
+}
+
+.btn-nav-inactivo:hover {
+  background-color: #333333 !important;
+  border-color: #888888 !important;
+}
+
+/* Forzar visibilidad de los elementos */
+header[style*="backgroundColor"] {
+  background-color: #dc2626 !important;
+  background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+}
+
+nav[style*="backgroundColor"] {
+  background-color: #000000 !important;
+}
+
+/* Forzar el fondo rojo para el título */
+h1[style*="color"] {
+  background-color: #dc2626 !important;
+  background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+  color: #ffffff !important;
+  padding: 1rem 2rem !important;
+  border-radius: 8px !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Asegurar que el header tenga fondo rojo visible */
+header {
+  background-color: #dc2626 !important;
+  background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+}
+
+/* Título del sistema - solo texto centrado sin fondo */
+.sistema-titulo {
+  color: #ffffff !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3) !important;
+  font-weight: 900 !important;
+  text-align: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: none !important;
+  background-color: transparent !important;
+}
+
+/* Contenedor principal para limitar el ancho máximo a tamaño laptop */
+.laptop-container {
+  max-width: 1440px; /* Ancho máximo típico de laptop */
+  margin: 0 auto; /* Centrar horizontalmente */
+  width: 100%; /* Usar todo el ancho disponible hasta el máximo */
+}
+
+/* Para pantallas muy pequeñas, asegurar que se adapte */
+@media (max-width: 1440px) {
+  .laptop-container {
+    max-width: 100%;
+    padding: 0 1rem;
+  }
+}
+
+/* Para pantallas más grandes que laptop, mantener el ancho fijo */
+@media (min-width: 1441px) {
+  .laptop-container {
+    max-width: 1440px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* Sombra sutil para destacar el contenido */
+  }
 }

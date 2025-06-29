@@ -1,30 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { MapPin, Phone, Clock, AlertTriangle, Users, Search, Filter, Plus, Navigation, Shield, Flame, Heart, Home, MessageCircle } from 'lucide-react';
 
-// Definición de tipos
-interface Incident {
-  id: number;
-  type: string;
-  description: string;
-  location: { lat: number; lng: number };
-  anonymous: boolean;
-  timestamp: Date;
-}
-
-interface Entity {
-  id: number;
-  name: string;
-  type: string;
-  lat: number;
-  lng: number;
-  phone: string;
-  address: string;
-  distance?: number;
-}
-
 const IncidentReportingSystem = () => {
   const [activeTab, setActiveTab] = useState('map');
-  const [incidents, setIncidents] = useState<Incident[]>([]);
+  const [incidents, setIncidents] = useState([]);
   const [newIncident, setNewIncident] = useState({
     type: '',
     description: '',
@@ -32,7 +11,7 @@ const IncidentReportingSystem = () => {
     anonymous: false,
     timestamp: new Date()
   });
-  const [nearestEntities, setNearestEntities] = useState<Entity[]>([]);
+  const [nearestEntities, setNearestEntities] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('all');
 
@@ -92,17 +71,17 @@ const IncidentReportingSystem = () => {
 
   // Algoritmo de clustering simple para identificar zonas calientes
   const getHotZones = () => {
-    const zones: Record<string, number> = {};
+    const zones = {};
     incidents.forEach(incident => {
       const zoneKey = `${Math.floor(incident.location.lat * 100)}-${Math.floor(incident.location.lng * 100)}`;
       zones[zoneKey] = (zones[zoneKey] || 0) + 1;
     });
     
     return Object.entries(zones)
-      .filter(([_, count]) => count >= 2)
+      .filter(([_, count]) => (count as number) >= 2)
       .map(([zone, count]) => ({
         zone,
-        count,
+        count: count as number,
         lat: parseFloat(zone.split('-')[0]) / 100,
         lng: parseFloat(zone.split('-')[1]) / 100
       }));
@@ -148,18 +127,18 @@ const IncidentReportingSystem = () => {
   // Algoritmo de búsqueda y filtrado
   const getFilteredIncidents = () => {
     let filtered = incidents;
-
+    
     if (filterType !== 'all') {
       filtered = filtered.filter(incident => incident.type === filterType);
     }
-
+    
     if (searchTerm) {
       filtered = filtered.filter(incident => 
         incident.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
         incident.type.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
-
+    
     return filtered.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
   };
 
@@ -186,7 +165,6 @@ const IncidentReportingSystem = () => {
   };
 
   const hotZones = getHotZones();
-  const nearestDistance = nearestEntities.length > 0 ? nearestEntities[0]?.distance?.toFixed(1) || '0.0' : '0.0';
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -401,7 +379,7 @@ const IncidentReportingSystem = () => {
                           <div>
                             <h3 className="font-medium text-gray-900">{entity.name}</h3>
                             <p className="text-sm text-gray-600">{entity.address}</p>
-                            <p className="text-xs text-gray-500">Distancia: {entity.distance?.toFixed(2)} km</p>
+                            <p className="text-xs text-gray-500">Distancia: {entity.distance.toFixed(2)} km</p>
                           </div>
                         </div>
                         <div className="flex items-center space-x-2">
@@ -661,7 +639,7 @@ const IncidentReportingSystem = () => {
                 <div className="space-y-4">
                   <div className="text-center">
                     <div className="text-3xl font-bold text-green-600">
-                      {nearestEntities.length > 0 ? nearestEntities[0]?.distance?.toFixed(1) : '0.0'}
+                      {nearestEntities.length > 0 ? nearestEntities[0]?.distance.toFixed(1) : '0.0'}
                     </div>
                     <div className="text-sm text-gray-600">km promedio</div>
                     <div className="text-xs text-gray-500">a la entidad más cercana</div>
@@ -754,8 +732,9 @@ const IncidentReportingSystem = () => {
       {/* Footer */}
       <footer className="bg-white border-t mt-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div>
+          <div className="flex flex-col md:flex-row gap-8">
+            {/* Container Números de Emergencia */}
+            <div className="flex-1 bg-white rounded-xl shadow-lg p-6 border-4 border-red-500">
               <h3 className="font-medium text-gray-900 mb-3">Números de Emergencia</h3>
               <div className="space-y-2 text-sm text-gray-600">
                 <div className="flex justify-between">
@@ -776,8 +755,9 @@ const IncidentReportingSystem = () => {
                 </div>
               </div>
             </div>
-            
-            <div>
+
+            {/* Container Estadísticas del Sistema */}
+            <div className="flex-1 bg-white rounded-xl shadow-lg p-6 border-4 border-blue-500">
               <h3 className="font-medium text-gray-900 mb-3">Estadísticas del Sistema</h3>
               <div className="space-y-2 text-sm text-gray-600">
                 <div className="flex justify-between">
@@ -798,16 +778,31 @@ const IncidentReportingSystem = () => {
                 </div>
               </div>
             </div>
-            
-            <div>
-              <h3 className="font-medium text-gray-900 mb-3">Información del Proyecto</h3>
-              <div className="text-sm text-gray-600 space-y-1">
-                <p>Curso: Análisis y Diseño de Algoritmos</p>
-                <p>Sistema de Reporte de Incidentes</p>
-                <p>Implementación de algoritmos de búsqueda, ordenamiento y clustering</p>
-                <p className="text-xs text-gray-500 mt-3">
-                  © 2025 - Proyecto Académico
-                </p>
+
+            {/* Container Entidades por Tipo */}
+            <div className="flex-1 bg-white rounded-xl shadow-lg p-6 border-4 border-green-500">
+              <h3 className="font-medium text-gray-900 mb-3">Entidades por Tipo</h3>
+              <div className="space-y-2 text-sm text-gray-600">
+                <div className="flex justify-between">
+                  <span>👮 Comisarías:</span>
+                  <span className="font-bold text-blue-600">{emergencyEntities.filter(e => e.type === 'police').length}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>🏥 Hospitales:</span>
+                  <span className="font-bold text-green-600">{emergencyEntities.filter(e => e.type === 'medical').length}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>🚒 Bomberos:</span>
+                  <span className="font-bold text-red-600">{emergencyEntities.filter(e => e.type === 'fire').length}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>🛡️ Serenazgo:</span>
+                  <span className="font-bold text-purple-600">4</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>⚡ Defensa Civil:</span>
+                  <span className="font-bold text-yellow-600">2</span>
+                </div>
               </div>
             </div>
           </div>
