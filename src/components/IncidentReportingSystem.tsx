@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { AlertTriangle, MapPin, Plus, Navigation, MessageCircle, Phone, Users, Settings } from 'lucide-react';
+import { MapPin, Plus, Navigation, MessageCircle, Phone, Users, Settings } from 'lucide-react';
 import IncidentForm from './IncidentForm';
 import IncidentMap from './IncidentMap';
 import NearestEntities from './NearestEntities';
@@ -215,31 +215,22 @@ const IncidentReportingSystem = () => {
   const filteredIncidents = () => getFilteredIncidents(incidents, filterType, searchTerm);
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <div className="flex items-center space-x-3">
-              <AlertTriangle className="w-8 h-8 text-red-600" />
-              <h1 className="text-2xl font-bold text-gray-900">Sistema de Reporte de Incidentes</h1>
-            </div>
-            <div className="flex items-center space-x-2">
-              <span className="text-sm text-gray-600">Reportes en cola:</span>
-              <span className="bg-red-100 text-red-800 px-2 py-1 rounded-full text-sm font-medium">
-                {incidents.length}
-              </span>
-            </div>
+    <div className="min-h-screen bg-gray-50" style={{ backgroundImage: 'none', background: '#f8fafc' }}>
+      <header className="shadow-sm border-b" style={{ background: 'linear-gradient(135deg, #ef4444, #dc2626)', backgroundImage: 'none' }}>
+        <div className="px-0 main-padding">
+          <div className="flex justify-center items-center py-6">
+            <h1 className="text-2xl font-bold text-white text-center" style={{ backgroundImage: 'none', background: 'transparent' }}>Sistema de Reporte de Incidentes</h1>
           </div>
         </div>
       </header>
       
       {/* Barra de navegación moderna estilo píldora */}
-      <nav className="bg-gradient-to-r from-gray-50 to-blue-50 border-b border-gray-200 py-4">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-wrap gap-2 justify-center">
+      <nav className="bg-black border-b border-gray-700 py-4" style={{ backgroundImage: 'none' }}>
+        <div className="px-0 main-padding">
+          <div className="flex gap-2 justify-center overflow-x-auto scrollbar-hide nav-single-line" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', backgroundImage: 'none' }}>
             {[
-              { id: 'map', label: 'Mapa de Incidentes', icon: MapPin },
-              { id: 'report', label: 'Reportar Incidente', icon: Plus },
+              { id: 'map', label: 'Inicio', icon: MapPin },
+              { id: 'report', label: 'Incidentes', icon: Plus },
               { id: 'entities', label: 'Entidades Cercanas', icon: Navigation },
               { id: 'forum', label: 'Foro de Reportes', icon: MessageCircle },
               { id: 'contacts', label: 'Contactos de Emergencia', icon: Phone },
@@ -249,10 +240,10 @@ const IncidentReportingSystem = () => {
               <button
                 key={id}
                 onClick={() => setActiveTab(id)}
-                className={`flex items-center space-x-2 px-4 py-2 rounded-full font-medium text-sm transition-all duration-300 transform hover:scale-105 ${
+                className={`flex items-center space-x-2 px-4 py-2 rounded-full font-medium text-sm transition-all duration-300 transform hover:scale-105 nav-button ${
                   activeTab === id
-                    ? 'bg-gradient-to-r from-red-500 to-orange-500 text-white shadow-lg shadow-red-500/30'
-                    : 'bg-white text-gray-600 hover:bg-gray-100 hover:text-gray-800 shadow-md hover:shadow-lg border border-gray-200'
+                    ? 'bg-green-500 text-white shadow-lg shadow-green-500/30'
+                    : 'bg-transparent text-white hover:bg-orange-500 hover:text-white shadow-md hover:shadow-lg border border-gray-600'
                 }`}
               >
                 <Icon className="w-4 h-4" />
@@ -262,10 +253,10 @@ const IncidentReportingSystem = () => {
             {/* Botón temporal para pruebas GPS */}
             <button
               onClick={() => setActiveTab('geolocation-test')}
-              className={`flex items-center space-x-2 px-4 py-2 rounded-full font-medium text-sm transition-all duration-300 transform hover:scale-105 ${
+              className={`flex items-center space-x-2 px-4 py-2 rounded-full font-medium text-sm transition-all duration-300 transform hover:scale-105 nav-button ${
                 activeTab === 'geolocation-test'
-                  ? 'bg-gradient-to-r from-green-500 to-teal-500 text-white shadow-lg shadow-green-500/30'
-                  : 'bg-white text-gray-600 hover:bg-gray-100 hover:text-gray-800 shadow-md hover:shadow-lg border border-gray-200'
+                  ? 'bg-green-500 text-white shadow-lg shadow-green-500/30'
+                  : 'bg-transparent text-white hover:bg-orange-500 hover:text-white shadow-md hover:shadow-lg border border-gray-600'
               }`}
             >
               <MapPin className="w-4 h-4" />
@@ -274,27 +265,10 @@ const IncidentReportingSystem = () => {
           </div>
         </div>
       </nav>
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="py-8 px-0 main-padding" style={{ backgroundImage: 'none', background: 'transparent' }}>
         {/* Sección del Mapa de Incidentes con imagen de encabezado */}
         {activeTab === 'map' && (
           <div className="space-y-6">
-            {/* Imagen de encabezado para el mapa de incidentes */}
-            <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-              <img 
-                src="https://picsum.photos/800/400?random=1" 
-                alt="Servicios de Emergencia" 
-                className="w-full h-64 md:h-80 object-cover"
-                onLoad={(e) => {
-                  console.log('✅ Imagen cargada correctamente');
-                }}
-                onError={(e) => {
-                  console.log('❌ Error al cargar imagen');
-                  // Intentar con otra imagen
-                  e.currentTarget.src = "https://via.placeholder.com/800x400/4F46E5/FFFFFF?text=Servicios+de+Emergencia";
-                }}
-              />
-            </div>
-            
             {/* Componente del mapa */}
             <IncidentMap incidents={incidents} />
           </div>
@@ -308,45 +282,27 @@ const IncidentReportingSystem = () => {
             refreshLocation={refreshLocation}
           />
         )}
-        {/* Sección de Entidades Cercanas con imagen de encabezado */}
+        {/* Sección de Entidades Cercanas */}
         {activeTab === 'entities' && (
           <div className="space-y-6">
-            {/* Imagen de encabezado para entidades de emergencia */}
-            <div className="relative bg-white rounded-lg shadow-lg overflow-hidden">
-              <div className="relative h-64 md:h-80">
-                <img 
-                  src="https://picsum.photos/800/400?random=2" 
-                  alt="Entidades de Emergencia" 
-                  className="w-full h-full object-cover"
-                  onLoad={(e) => {
-                    console.log('✅ Imagen de entidades cargada correctamente');
-                  }}
-                  onError={(e) => {
-                    console.log('❌ Error al cargar imagen de entidades');
-                    // Intentar con otra imagen
-                    e.currentTarget.src = "https://via.placeholder.com/800x400/DC2626/FFFFFF?text=Entidades+de+Emergencia";
-                  }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-blue-900/70 via-blue-600/30 to-transparent"></div>
-                <div className="absolute bottom-0 left-0 right-0 p-6">
-                  <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">
-                    🚑 Entidades de Emergencia Cercanas
-                  </h2>
-                  <p className="text-white/90 text-lg">
-                    Algoritmo K-Nearest Neighbors para encontrar ayuda rápida
-                  </p>
-                  <div className="flex items-center mt-3 space-x-4">
-                    <div className="bg-white/20 backdrop-blur-sm rounded-full px-4 py-2">
-                      <span className="text-white font-medium">
-                        🚑 Servicios de Emergencia
-                      </span>
-                    </div>
-                    <div className="bg-white/20 backdrop-blur-sm rounded-full px-4 py-2">
-                      <span className="text-white font-medium">
-                        📍 Búsqueda Inteligente
-                      </span>
-                    </div>
-                  </div>
+            {/* Título de la sección */}
+            <div className="bg-white rounded-lg shadow-lg p-6">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 image-section-title">
+                🚑 Entidades de Emergencia Cercanas
+              </h2>
+              <p className="text-gray-700 text-lg mb-6">
+                Algoritmo K-Nearest Neighbors para encontrar ayuda rápida
+              </p>
+              <div className="flex items-center flex-wrap gap-4">
+                <div className="bg-blue-100 rounded-full px-6 py-3">
+                  <span className="text-blue-800 font-medium">
+                    🚑 Servicios de Emergencia
+                  </span>
+                </div>
+                <div className="bg-green-100 rounded-full px-6 py-3">
+                  <span className="text-green-800 font-medium">
+                    📍 Búsqueda Inteligente
+                  </span>
                 </div>
               </div>
             </div>

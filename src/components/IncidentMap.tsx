@@ -390,7 +390,7 @@ const IncidentMap = ({ incidents }) => {
   return (
     <div className="bg-white rounded-lg shadow p-6 fade-in">
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-        <h2 className="text-xl font-semibold">
+        <h2 className="text-xl font-semibold image-section-title">
           Mapa de Incidentes y Entidades de Emergencia
         </h2>
         <div style={{ fontSize: '14px', color: '#666' }}>

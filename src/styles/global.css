@@ -2,12 +2,17 @@
 
 body {
   font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
-  background: linear-gradient(135deg, #f7f7fa 0%, #f0f4ff 100%);
+  background: #f8fafc !important;
   color: #23272f;
   margin: 0;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background-image: none !important;
+  background-attachment: initial !important;
+  background-repeat: initial !important;
+  background-size: initial !important;
+  background-position: initial !important;
 }
 
 #root {
@@ -17,13 +22,18 @@ body {
   align-items: center;
   justify-content: flex-start;
   min-height: 100vh;
+  background-image: none !important;
+  background: transparent !important;
 }
 
 header, nav, main, footer {
-  width: 100%;
-  max-width: 900px;
-  margin-left: auto;
-  margin-right: auto;
+  width: 100vw !important;
+  max-width: 100vw !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  background-image: none !important;
 }
 
 main {
@@ -36,6 +46,7 @@ main {
   max-width: 900px;
   margin: 0 auto;
   padding: 2rem 0 2rem 0;
+  background-image: none !important;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -608,4 +619,217 @@ html, body {
   100% {
     background-position: 0% 50%;
   }
+}
+
+/* Estilos para el título en la sección de imagen */
+.image-section-title {
+  text-transform: uppercase !important;
+  color: #d90429 !important;
+  font-weight: 900 !important;
+  font-size: 2.5rem !important;
+  letter-spacing: 3px !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3) !important;
+  background: linear-gradient(45deg, #d90429, #ff6a00) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  margin-bottom: 1rem !important;
+}
+
+/* Versión alternativa con fondo sólido */
+.image-section-title-solid {
+  text-transform: uppercase !important;
+  color: #ffffff !important;
+  font-weight: 900 !important;
+  font-size: 2.5rem !important;
+  letter-spacing: 3px !important;
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7) !important;
+  background: linear-gradient(45deg, #d90429, #ff6a00) !important;
+  padding: 1rem 2rem !important;
+  border-radius: 15px !important;
+  margin-bottom: 1rem !important;
+  box-shadow: 0 8px 25px rgba(217, 4, 41, 0.4) !important;
+}
+
+/* Responsive para el título */
+@media (max-width: 768px) {
+  .image-section-title,
+  .image-section-title-solid {
+    font-size: 1.8rem !important;
+    letter-spacing: 2px !important;
+    padding: 0.8rem 1.5rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .image-section-title,
+  .image-section-title-solid {
+    font-size: 1.4rem !important;
+    letter-spacing: 1px !important;
+    padding: 0.6rem 1rem !important;
+  }
+}
+
+/* Navegación con scroll horizontal - forzar una sola línea */
+.overflow-x-auto {
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Ocultar scrollbar en navegadores webkit */
+.scrollbar-hide {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE y Edge */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari y Opera */
+}
+
+/* Navegación flex sin wrap - forzar una sola línea */
+.nav-single-line {
+  display: flex;
+  flex-wrap: nowrap !important;
+  gap: 0.5rem;
+  justify-content: flex-start;
+  min-width: max-content;
+  padding: 0 1rem;
+}
+
+/* Asegurar que los botones no se encogen y mantengan su tamaño */
+.nav-button {
+  flex-shrink: 0 !important;
+  white-space: nowrap !important;
+  min-width: fit-content !important;
+  display: inline-block !important;
+}
+
+/* Estilos responsive para navegación de una línea */
+@media (max-width: 768px) {
+  .nav-single-line {
+    justify-content: flex-start;
+    padding: 0 0.5rem;
+  }
+}
+
+/* Ajustes específicos para botones de navegación */
+nav button {
+  flex-shrink: 0 !important;
+  white-space: nowrap !important;
+  min-width: fit-content !important;
+}
+
+/* Padding lateral para que el contenido no quede pegado al borde */
+@media (min-width: 640px) {
+  .main-padding {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+@media (max-width: 639px) {
+  .main-padding {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+}
+
+/* Estilos para la navegación con fondo negro */
+.nav-black-bg {
+  background-color: #000000 !important;
+}
+
+.nav-button-black-theme {
+  transition: all 0.3s ease !important;
+}
+
+.nav-button-black-theme:not(.active) {
+  background-color: #ffffff !important;
+  color: #1f2937 !important;
+  border: 1px solid #d1d5db !important;
+}
+
+.nav-button-black-theme:not(.active):hover {
+  background-color: #f3f4f6 !important;
+  color: #111827 !important;
+  transform: translateY(-1px) scale(1.02) !important;
+}
+
+.nav-button-black-theme.active {
+  background-color: #10b981 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 14px 0 rgba(16, 185, 129, 0.39) !important;
+}
+
+.nav-button-black-theme.active:hover {
+  background-color: #059669 !important;
+  box-shadow: 0 6px 20px 0 rgba(16, 185, 129, 0.5) !important;
+}
+
+/* Estilos para navegación con fondo negro y hover naranja */
+.nav-black-orange-theme {
+  background-color: #000000 !important;
+  border-color: #374151 !important;
+}
+
+.nav-button-orange-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.nav-button-orange-hover:not(.active) {
+  background-color: transparent !important;
+  color: #ffffff !important;
+  border: 1px solid #4b5563 !important;
+}
+
+.nav-button-orange-hover:not(.active):hover {
+  background-color: #f97316 !important;
+  color: #ffffff !important;
+  border-color: #ea580c !important;
+  box-shadow: 0 4px 14px 0 rgba(249, 115, 22, 0.4) !important;
+  transform: translateY(-2px) scale(1.05) !important;
+}
+
+.nav-button-orange-hover.active {
+  background-color: #10b981 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 14px 0 rgba(16, 185, 129, 0.39) !important;
+}
+
+.nav-button-orange-hover.active:hover {
+  background-color: #059669 !important;
+  box-shadow: 0 6px 20px 0 rgba(16, 185, 129, 0.5) !important;
+}
+
+/* Eliminar cualquier imagen de fondo que pueda aparecer */
+*, *::before, *::after {
+  background-image: none !important;
+}
+
+html {
+  background-image: none !important;
+  background: #f8fafc !important;
+}
+
+#root {
+  background-image: none !important;
+  background: transparent !important;
+}
+
+/* Asegurar que ningún contenedor tenga imágenes de fondo */
+.min-h-screen {
+  background-image: none !important;
+}
+
+header {
+  background-image: none !important;
+}
+
+nav {
+  background-image: none !important;
+}
+
+main {
+  background-image: none !important;
 }
