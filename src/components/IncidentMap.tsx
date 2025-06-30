@@ -390,7 +390,7 @@ const IncidentMap = ({ incidents }) => {
   return (
     <div className="bg-white rounded-lg shadow p-6 fade-in">
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-        <h2 className="text-xl font-semibold">
+        <h2 className="text-xl font-semibold image-section-title">
           Mapa de Incidentes y Entidades de Emergencia
         </h2>
         <div style={{ fontSize: '14px', color: '#666' }}>
@@ -554,6 +554,7 @@ const IncidentMap = ({ incidents }) => {
             <div>🛡️ Serenazgo: <b>{emergencyEntities.filter(e => e.type === 'serenazgo').length}</b></div>
             <div>⚡ Defensa Civil: <b>{emergencyEntities.filter(e => e.type === 'defensa_civil').length}</b></div>
           </div>
+          {/*
           <div>
             <h3 style={{ fontWeight: 700, marginBottom: 8 }}>Información del Proyecto</h3>
             <div>Curso: Análisis y Diseño de Algoritmos</div>
@@ -561,6 +562,7 @@ const IncidentMap = ({ incidents }) => {
             <div>Algoritmos: Búsqueda, Ordenamiento, Clustering</div>
             <div style={{ fontSize: 14, color: '#888', marginTop: 8 }}>© 2025 - Proyecto Académico</div>
           </div>
+          */}
         </div>
       </footer>
     </div>

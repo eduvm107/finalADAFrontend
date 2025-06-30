@@ -14,7 +14,21 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "react-jsx",
-    "baseUrl": "./src"
+    "baseUrl": "./src",
+    "outDir": "./dist",
+    "declaration": false,
+    "sourceMap": true
   },
-  "include": ["src"]
+  "include": [
+    "src/**/*",
+    "incident-reporting-system.tsx",
+    "src/types/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "**/*.test.js",
+    "**/*.test.ts",
+    "src/utils/geolocation-test.js"
+  ]
 }

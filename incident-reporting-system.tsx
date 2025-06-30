@@ -78,10 +78,10 @@ const IncidentReportingSystem = () => {
     });
     
     return Object.entries(zones)
-      .filter(([_, count]) => count >= 2)
+      .filter(([_, count]) => (count as number) >= 2)
       .map(([zone, count]) => ({
         zone,
-        count,
+        count: count as number,
         lat: parseFloat(zone.split('-')[0]) / 100,
         lng: parseFloat(zone.split('-')[1]) / 100
       }));
@@ -139,7 +139,7 @@ const IncidentReportingSystem = () => {
       );
     }
     
-    return filtered.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+    return filtered.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
   };
 
   const getIncidentIcon = (type) => {
@@ -732,8 +732,9 @@ const IncidentReportingSystem = () => {
       {/* Footer */}
       <footer className="bg-white border-t mt-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div>
+          <div className="flex flex-col md:flex-row gap-8">
+            {/* Container Números de Emergencia */}
+            <div className="flex-1 bg-white rounded-xl shadow-lg p-6 border-4 border-red-500">
               <h3 className="font-medium text-gray-900 mb-3">Números de Emergencia</h3>
               <div className="space-y-2 text-sm text-gray-600">
                 <div className="flex justify-between">
@@ -754,8 +755,9 @@ const IncidentReportingSystem = () => {
                 </div>
               </div>
             </div>
-            
-            <div>
+
+            {/* Container Estadísticas del Sistema */}
+            <div className="flex-1 bg-white rounded-xl shadow-lg p-6 border-4 border-blue-500">
               <h3 className="font-medium text-gray-900 mb-3">Estadísticas del Sistema</h3>
               <div className="space-y-2 text-sm text-gray-600">
                 <div className="flex justify-between">
@@ -776,16 +778,31 @@ const IncidentReportingSystem = () => {
                 </div>
               </div>
             </div>
-            
-            <div>
-              <h3 className="font-medium text-gray-900 mb-3">Información del Proyecto</h3>
-              <div className="text-sm text-gray-600 space-y-1">
-                <p>Curso: Análisis y Diseño de Algoritmos</p>
-                <p>Sistema de Reporte de Incidentes</p>
-                <p>Implementación de algoritmos de búsqueda, ordenamiento y clustering</p>
-                <p className="text-xs text-gray-500 mt-3">
-                  © 2025 - Proyecto Académico
-                </p>
+
+            {/* Container Entidades por Tipo */}
+            <div className="flex-1 bg-white rounded-xl shadow-lg p-6 border-4 border-green-500">
+              <h3 className="font-medium text-gray-900 mb-3">Entidades por Tipo</h3>
+              <div className="space-y-2 text-sm text-gray-600">
+                <div className="flex justify-between">
+                  <span>👮 Comisarías:</span>
+                  <span className="font-bold text-blue-600">{emergencyEntities.filter(e => e.type === 'police').length}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>🏥 Hospitales:</span>
+                  <span className="font-bold text-green-600">{emergencyEntities.filter(e => e.type === 'medical').length}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>🚒 Bomberos:</span>
+                  <span className="font-bold text-red-600">{emergencyEntities.filter(e => e.type === 'fire').length}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>🛡️ Serenazgo:</span>
+                  <span className="font-bold text-purple-600">4</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>⚡ Defensa Civil:</span>
+                  <span className="font-bold text-yellow-600">2</span>
+                </div>
               </div>
             </div>
           </div>
