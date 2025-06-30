@@ -8,10 +8,13 @@ const GeolocationTest = () => {
 
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-lg">
-      <h2 className="text-2xl font-bold mb-6 text-gray-800 flex items-center gap-2">
-        <MapPin className="w-6 h-6 text-blue-500" />
-        Prueba de Geolocalización
-      </h2>
+      <div className="bg-cyan-300 text-black p-8 rounded-2xl mb-8 shadow-2xl border-4 border-cyan-200" style={{backgroundColor: '#67e8f9', boxShadow: '0 25px 50px -12px rgba(103, 232, 249, 0.5)'}}>
+        <h2 className="text-4xl font-black flex items-center justify-center gap-4 text-center">
+          <MapPin className="w-10 h-10 text-black animate-pulse" />
+          PRUEBA DE GEOLOCALIZACIÓN
+          <MapPin className="w-10 h-10 text-black animate-pulse" />
+        </h2>
+      </div>
       
       <div className="space-y-4">
         {/* Estado actual */}
@@ -85,10 +88,10 @@ const GeolocationTest = () => {
         <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
           <h3 className="font-semibold mb-2 text-blue-800">Instrucciones:</h3>
           <ul className="text-blue-700 text-sm space-y-1">
-            <li>• Si es la primera vez, el navegador pedirá permiso para acceder a la ubicación</li>
-            <li>• Asegúrate de hacer clic en "Permitir" cuando aparezca el popup</li>
-            <li>• Si ya denegaste el permiso, ve a la configuración del sitio para habilitarlo</li>
-            <li>• La precisión puede variar según tu dispositivo y conexión</li>
+            <li>Si es la primera vez, el navegador pedirá permiso para acceder a la ubicación</li>
+            <li>Asegúrate de hacer clic en "Permitir" cuando aparezca el popup</li>
+            <li>Si ya denegaste el permiso, ve a la configuración del sitio para habilitarlo</li>
+            <li>La precisión puede variar según tu dispositivo y conexión</li>
           </ul>
         </div>
       </div>

@@ -28,10 +28,10 @@ const IncidentForm = ({
 
         {/* Main Form */}
         <div className="incident-form-card bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200 w-full mx-auto">
-          <div className="incident-form-gradient-header bg-gradient-to-r from-red-500 to-red-600 p-6">
+          <div className="bg-cyan-400 p-6 text-center">
             <div className="flex items-center justify-center">
-              <Shield className="w-6 h-6 mr-3 text-white" />
-              <h2 className="text-2xl font-bold text-white text-center">Información del Incidente</h2>
+              <Shield className="w-6 h-6 mr-3 text-black" />
+              <h2 className="text-2xl font-bold text-black text-center">Información del Incidente</h2>
             </div>
           </div>
 

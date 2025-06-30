@@ -311,7 +311,7 @@ const IncidentForum = ({ incidents, searchTerm, setSearchTerm, filterType, setFi
       {/* Header del foro */}
       <div className="bg-white rounded-2xl shadow-lg p-8 mb-8 border border-gray-100">
         <div className="flex items-center space-x-4 mb-8">
-          <div className="w-12 h-12 rounded-full bg-gradient-to-r from-red-500 to-pink-500 flex items-center justify-center">
+          <div className="w-12 h-12 rounded-full bg-gradient-to-r from-cyan-400 to-cyan-500 flex items-center justify-center">
             <MessageCircle className="w-7 h-7 text-white" />
           </div>
           <div>
