@@ -523,38 +523,155 @@ const IncidentMap = ({ incidents }) => {
       }}>
         <div style={{
           display: 'flex',
-          flexWrap: 'wrap',
-          justifyContent: 'space-between',
-          gap: '2rem',
+          flexDirection: 'column',
+          gap: '1.5rem',
           maxWidth: 1100,
-          margin: '0 auto',
-          fontSize: 18
+          margin: '0 auto'
         }}>
-          <div>
-            <h3 style={{ fontWeight: 700, marginBottom: 8 }}>Números de Emergencia</h3>
-            <div>Policía Nacional: <span style={{ color: '#1565c0', fontWeight: 700 }}>105</span></div>
-            <div>Bomberos: <span style={{ color: '#f57c00', fontWeight: 700 }}>116</span></div>
-            <div>SAMU (Emergencias Médicas): <span style={{ color: '#d32f2f', fontWeight: 700 }}>106</span></div>
-            <div>Serenazgo: <span style={{ color: '#388e3c', fontWeight: 700 }}>107</span></div>
+          <div style={{
+            display: 'flex',
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            gap: '1.5rem'
+          }}>
+            {/* Números de Emergencia */}
+            <div style={{
+              flex: 1,
+              minWidth: '300px',
+              background: '#fff',
+              padding: '1.5rem',
+              borderRadius: '12px',
+              border: '4px solid #dc2626',
+              boxShadow: '0 4px 12px rgba(220, 38, 38, 0.15)',
+              transition: 'transform 0.2s ease, box-shadow 0.2s ease'
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
+                <span style={{ fontSize: '1.8rem', marginRight: '0.75rem' }}>🚨</span>
+                <h3 style={{ fontWeight: 700, margin: 0, color: '#1f2937', fontSize: '1.2rem' }}>Números de Emergencia</h3>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.75rem', background: '#f9fafb', borderRadius: '8px', border: '1px solid #e5e7eb' }}>
+                  <span style={{ fontSize: '0.875rem', fontWeight: 500, color: '#374151' }}>Policía Nacional</span>
+                  <span style={{ background: '#3b82f6', color: 'white', padding: '0.25rem 1rem', borderRadius: '20px', fontWeight: 700, fontSize: '1rem' }}>105</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.75rem', background: '#f9fafb', borderRadius: '8px', border: '1px solid #e5e7eb' }}>
+                  <span style={{ fontSize: '0.875rem', fontWeight: 500, color: '#374151' }}>Bomberos</span>
+                  <span style={{ background: '#ef4444', color: 'white', padding: '0.25rem 1rem', borderRadius: '20px', fontWeight: 700, fontSize: '1rem' }}>116</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.75rem', background: '#f9fafb', borderRadius: '8px', border: '1px solid #e5e7eb' }}>
+                  <span style={{ fontSize: '0.875rem', fontWeight: 500, color: '#374151' }}>SAMU (Emergencias Médicas)</span>
+                  <span style={{ background: '#10b981', color: 'white', padding: '0.25rem 1rem', borderRadius: '20px', fontWeight: 700, fontSize: '1rem' }}>106</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.75rem', background: '#f9fafb', borderRadius: '8px', border: '1px solid #e5e7eb' }}>
+                  <span style={{ fontSize: '0.875rem', fontWeight: 500, color: '#374151' }}>Serenazgo</span>
+                  <span style={{ background: '#8b5cf6', color: 'white', padding: '0.25rem 1rem', borderRadius: '20px', fontWeight: 700, fontSize: '1rem' }}>107</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Estadísticas del Sistema */}
+            <div style={{
+              flex: 1,
+              minWidth: '300px',
+              background: '#fff',
+              padding: '1.5rem',
+              borderRadius: '12px',
+              border: '4px solid #2563eb',
+              boxShadow: '0 4px 12px rgba(37, 99, 235, 0.15)',
+              transition: 'transform 0.2s ease, box-shadow 0.2s ease'
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
+                <span style={{ fontSize: '1.8rem', marginRight: '0.75rem' }}>📊</span>
+                <h3 style={{ fontWeight: 700, margin: 0, color: '#1f2937', fontSize: '1.2rem' }}>Estadísticas del Sistema</h3>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.75rem', background: '#f9fafb', borderRadius: '8px', border: '1px solid #e5e7eb' }}>
+                  <span style={{ fontSize: '0.875rem', fontWeight: 500, color: '#374151' }}>Total de reportes</span>
+                  <span style={{ fontSize: '1.5rem', fontWeight: 700, color: '#2563eb' }}>{validIncidents.length}</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.75rem', background: '#f9fafb', borderRadius: '8px', border: '1px solid #e5e7eb' }}>
+                  <span style={{ fontSize: '0.875rem', fontWeight: 500, color: '#374151' }}>Entidades registradas</span>
+                  <span style={{ fontSize: '1.5rem', fontWeight: 700, color: '#2563eb' }}>{emergencyEntities.length}</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.75rem', background: '#f9fafb', borderRadius: '8px', border: '1px solid #e5e7eb' }}>
+                  <span style={{ fontSize: '0.875rem', fontWeight: 500, color: '#374151' }}>Entidades visibles</span>
+                  <span style={{ fontSize: '1.5rem', fontWeight: 700, color: '#2563eb' }}>{visibleEntities.length}</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.75rem', background: '#f9fafb', borderRadius: '8px', border: '1px solid #e5e7eb' }}>
+                  <span style={{ fontSize: '0.875rem', fontWeight: 500, color: '#374151' }}>Cobertura Lima</span>
+                  <span style={{ fontSize: '1.5rem', fontWeight: 700, color: '#10b981' }}>100%</span>
+                </div>
+                {entitiesLoading && <div style={{ color: '#f57c00', fontSize: '14px', textAlign: 'center', padding: '0.5rem' }}>🔄 Cargando entidades...</div>}
+                {entitiesError && <div style={{ color: '#d32f2f', fontSize: '14px', textAlign: 'center', padding: '0.5rem' }}>⚠️ Usando datos estáticos</div>}
+              </div>
+            </div>
+
+            {/* Entidades por Tipo */}
+            <div style={{
+              flex: 1,
+              minWidth: '300px',
+              background: '#fff',
+              padding: '1.5rem',
+              borderRadius: '12px',
+              border: '4px solid #10b981',
+              boxShadow: '0 4px 12px rgba(16, 185, 129, 0.15)',
+              transition: 'transform 0.2s ease, box-shadow 0.2s ease'
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
+                <span style={{ fontSize: '1.8rem', marginRight: '0.75rem' }}>🏢</span>
+                <h3 style={{ fontWeight: 700, margin: 0, color: '#1f2937', fontSize: '1.2rem' }}>Entidades por Tipo</h3>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.75rem', background: '#f9fafb', borderRadius: '8px', border: '1px solid #e5e7eb' }}>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <div style={{ width: '2rem', height: '2rem', background: '#3b82f6', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '0.75rem' }}>
+                      <span style={{ color: 'white', fontSize: '0.875rem' }}>👮</span>
+                    </div>
+                    <span style={{ fontSize: '0.875rem', fontWeight: 500, color: '#374151' }}>Comisarías</span>
+                  </div>
+                  <span style={{ fontSize: '1.25rem', fontWeight: 700, color: '#3b82f6' }}>{emergencyEntities.filter(e => e.type === 'policia').length}</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.75rem', background: '#f9fafb', borderRadius: '8px', border: '1px solid #e5e7eb' }}>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <div style={{ width: '2rem', height: '2rem', background: '#ef4444', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '0.75rem' }}>
+                      <span style={{ color: 'white', fontSize: '0.875rem' }}>🔥</span>
+                    </div>
+                    <span style={{ fontSize: '0.875rem', fontWeight: 500, color: '#374151' }}>Bomberos</span>
+                  </div>
+                  <span style={{ fontSize: '1.25rem', fontWeight: 700, color: '#ef4444' }}>{emergencyEntities.filter(e => e.type === 'bomberos').length}</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.75rem', background: '#f9fafb', borderRadius: '8px', border: '1px solid #e5e7eb' }}>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <div style={{ width: '2rem', height: '2rem', background: '#10b981', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '0.75rem' }}>
+                      <span style={{ color: 'white', fontSize: '0.875rem' }}>🏥</span>
+                    </div>
+                    <span style={{ fontSize: '0.875rem', fontWeight: 500, color: '#374151' }}>Hospitales</span>
+                  </div>
+                  <span style={{ fontSize: '1.25rem', fontWeight: 700, color: '#10b981' }}>{emergencyEntities.filter(e => e.type === 'hospital').length}</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.75rem', background: '#f9fafb', borderRadius: '8px', border: '1px solid #e5e7eb' }}>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <div style={{ width: '2rem', height: '2rem', background: '#388e3c', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '0.75rem' }}>
+                      <span style={{ color: 'white', fontSize: '0.875rem' }}>🛡️</span>
+                    </div>
+                    <span style={{ fontSize: '0.875rem', fontWeight: 500, color: '#374151' }}>Serenazgo</span>
+                  </div>
+                  <span style={{ fontSize: '1.25rem', fontWeight: 700, color: '#388e3c' }}>{emergencyEntities.filter(e => e.type === 'serenazgo').length}</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.75rem', background: '#f9fafb', borderRadius: '8px', border: '1px solid #e5e7eb' }}>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <div style={{ width: '2rem', height: '2rem', background: '#7b1fa2', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '0.75rem' }}>
+                      <span style={{ color: 'white', fontSize: '0.875rem' }}>⚡</span>
+                    </div>
+                    <span style={{ fontSize: '0.875rem', fontWeight: 500, color: '#374151' }}>Defensa Civil</span>
+                  </div>
+                  <span style={{ fontSize: '1.25rem', fontWeight: 700, color: '#7b1fa2' }}>{emergencyEntities.filter(e => e.type === 'defensa_civil').length}</span>
+                </div>
+              </div>
+            </div>
           </div>
-          <div>
-            <h3 style={{ fontWeight: 700, marginBottom: 8 }}>Estadísticas del Sistema</h3>
-            <div>Total de reportes: <b>{validIncidents.length}</b></div>
-            <div>Entidades registradas: <b>{emergencyEntities.length}</b></div>
-            <div>Entidades visibles: <b>{visibleEntities.length}</b></div>
-            <div>Cobertura Lima: <b>100%</b></div>
-            {entitiesLoading && <div style={{ color: '#f57c00', fontSize: '14px' }}>🔄 Cargando entidades...</div>}
-            {entitiesError && <div style={{ color: '#d32f2f', fontSize: '14px' }}>⚠️ Usando datos estáticos</div>}
-          </div>
-          <div>
-            <h3 style={{ fontWeight: 700, marginBottom: 8 }}>Entidades por Tipo</h3>
-            <div>👮 Comisarías: <b>{emergencyEntities.filter(e => e.type === 'policia').length}</b></div>
-            <div>🏥 Hospitales: <b>{emergencyEntities.filter(e => e.type === 'hospital').length}</b></div>
-            <div>🚒 Bomberos: <b>{emergencyEntities.filter(e => e.type === 'bomberos').length}</b></div>
-            <div>🛡️ Serenazgo: <b>{emergencyEntities.filter(e => e.type === 'serenazgo').length}</b></div>
-            <div>⚡ Defensa Civil: <b>{emergencyEntities.filter(e => e.type === 'defensa_civil').length}</b></div>
-          </div>
-          {/*
+        </div>
+        {/* Información del Proyecto comentada temporalmente
           <div>
             <h3 style={{ fontWeight: 700, marginBottom: 8 }}>Información del Proyecto</h3>
             <div>Curso: Análisis y Diseño de Algoritmos</div>
@@ -562,8 +679,7 @@ const IncidentMap = ({ incidents }) => {
             <div>Algoritmos: Búsqueda, Ordenamiento, Clustering</div>
             <div style={{ fontSize: 14, color: '#888', marginTop: 8 }}>© 2025 - Proyecto Académico</div>
           </div>
-          */}
-        </div>
+        */}
       </footer>
     </div>
   );

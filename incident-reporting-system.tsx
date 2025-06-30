@@ -169,46 +169,60 @@ const IncidentReportingSystem = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b">
+      <header className="bg-gradient-to-r from-red-600 via-red-700 to-red-800 shadow-xl border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <div className="flex items-center space-x-3">
-              <AlertTriangle className="w-8 h-8 text-red-600" />
-              <h1 className="text-2xl font-bold text-gray-900">Sistema de Reporte de Incidentes</h1>
+          <div className="flex justify-between items-center py-6">
+            <div className="flex items-center space-x-4">
+              <div className="bg-white rounded-full p-3 shadow-lg">
+                <AlertTriangle className="w-8 h-8 text-red-600" />
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold text-white">Sistema de Reporte de Incidentes</h1>
+                <p className="text-red-100 text-sm">Lima Metropolitana - Monitoreo en Tiempo Real</p>
+              </div>
             </div>
-            <div className="flex items-center space-x-2">
-              <span className="text-sm text-gray-600">Reportes en cola:</span>
-              <span className="bg-red-100 text-red-800 px-2 py-1 rounded-full text-sm font-medium">
-                {incidents.length}
-              </span>
+            <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-2 bg-white/20 backdrop-blur-sm rounded-full px-4 py-2">
+                <span className="text-sm text-white font-medium">Reportes activos:</span>
+                <span className="bg-white text-red-600 px-3 py-1 rounded-full text-sm font-bold shadow-lg">
+                  {incidents.length}
+                </span>
+              </div>
+              <div className="hidden md:flex items-center space-x-2 bg-white/20 backdrop-blur-sm rounded-full px-4 py-2">
+                <Clock className="w-4 h-4 text-white" />
+                <span className="text-sm text-white font-medium">{new Date().toLocaleTimeString()}</span>
+              </div>
             </div>
           </div>
         </div>
       </header>
 
       {/* Navigation */}
-      <nav className="bg-white border-b">
+      <nav className="bg-gradient-to-r from-gray-50 to-white border-b-2 border-gray-200 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex space-x-8">
+          <div className="flex space-x-1 overflow-x-auto">
             {[
-              { id: 'map', label: 'Mapa de Incidentes', icon: MapPin },
-              { id: 'report', label: 'Reportar Incidente', icon: Plus },
-              { id: 'entities', label: 'Entidades Cercanas', icon: Navigation },
-              { id: 'forum', label: 'Foro de Reportes', icon: MessageCircle },
-              { id: 'contacts', label: 'Contactos de Emergencia', icon: Phone },
-              { id: 'analytics', label: 'Análisis de Zonas', icon: Users }
-            ].map(({ id, label, icon: Icon }) => (
+              { id: 'map', label: 'Mapa de Incidentes', icon: MapPin, color: 'text-blue-600', bgColor: 'bg-blue-50 border-blue-200' },
+              { id: 'report', label: 'Reportar Incidente', icon: Plus, color: 'text-red-600', bgColor: 'bg-red-50 border-red-200' },
+              { id: 'entities', label: 'Entidades Cercanas', icon: Navigation, color: 'text-green-600', bgColor: 'bg-green-50 border-green-200' },
+              { id: 'forum', label: 'Foro de Reportes', icon: MessageCircle, color: 'text-purple-600', bgColor: 'bg-purple-50 border-purple-200' },
+              { id: 'contacts', label: 'Contactos de Emergencia', icon: Phone, color: 'text-orange-600', bgColor: 'bg-orange-50 border-orange-200' },
+              { id: 'analytics', label: 'Análisis de Zonas', icon: Users, color: 'text-indigo-600', bgColor: 'bg-indigo-50 border-indigo-200' }
+            ].map(({ id, label, icon: Icon, color, bgColor }) => (
               <button
                 key={id}
                 onClick={() => setActiveTab(id)}
-                className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm ${
+                className={`flex items-center space-x-2 py-3 px-4 m-1 rounded-xl font-medium text-sm transition-all duration-300 transform hover:scale-105 ${
                   activeTab === id
-                    ? 'border-red-500 text-red-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    ? `${bgColor} ${color} border-2 shadow-lg font-bold`
+                    : 'border-2 border-transparent text-gray-600 hover:text-gray-800 hover:bg-gray-50'
                 }`}
               >
-                <Icon className="w-4 h-4" />
-                <span>{label}</span>
+                <Icon className={`w-5 h-5 ${activeTab === id ? color : 'text-gray-500'}`} />
+                <span className="whitespace-nowrap">{label}</span>
+                {activeTab === id && (
+                  <div className={`w-2 h-2 rounded-full ${color.replace('text-', 'bg-')}`}></div>
+                )}
               </button>
             ))}
           </div>
@@ -219,54 +233,112 @@ const IncidentReportingSystem = () => {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Mapa de Incidentes */}
         {activeTab === 'map' && (
-          <div className="space-y-6">
-            <div className="bg-white rounded-lg shadow p-6">
-              <h2 className="text-xl font-semibold mb-4">Mapa de Incidentes Reportados</h2>
-              <div className="bg-gray-100 rounded-lg h-96 flex items-center justify-center relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-green-100 to-blue-100"></div>
-                <div className="relative z-10">
-                  <MapPin className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                  <p className="text-gray-600 text-center">Mapa Interactivo</p>
-                  <p className="text-sm text-gray-500 text-center mt-2">
-                    {incidents.length} incidentes reportados
-                  </p>
+          <div className="space-y-8">
+            <div className="bg-white rounded-xl shadow-xl p-8 border border-gray-100">
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-2">Mapa de Incidentes Reportados</h2>
+                  <p className="text-gray-600">Visualización en tiempo real de todos los incidentes en Lima</p>
+                </div>
+                <div className="bg-gradient-to-r from-red-500 to-red-600 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg">
+                  🚨 {incidents.length} incidentes activos
+                </div>
+              </div>
+              <div className="bg-gradient-to-br from-blue-50 via-green-50 to-blue-100 rounded-xl h-96 flex items-center justify-center relative overflow-hidden border-2 border-blue-200 shadow-inner">
+                <div className="absolute inset-0 bg-gradient-to-br from-green-100/50 to-blue-100/50"></div>
+                <div className="relative z-10 text-center">
+                  <div className="bg-white rounded-full p-6 shadow-xl mb-4 mx-auto w-24 h-24 flex items-center justify-center">
+                    <MapPin className="w-12 h-12 text-blue-500" />
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-800 mb-2">Mapa Interactivo de Lima</h3>
+                  <p className="text-gray-600 text-center">Sistema de Monitoreo en Tiempo Real</p>
+                  <div className="mt-4 bg-white/80 backdrop-blur-sm rounded-full px-4 py-2 inline-block shadow-lg">
+                    <p className="text-sm text-gray-700 font-medium">
+                      📍 {incidents.length} ubicaciones monitoreadas
+                    </p>
+                  </div>
                 </div>
                 
-                {/* Simulación de marcadores en el mapa */}
+                {/* Simulación de marcadores en el mapa mejorados */}
                 {incidents.map((incident, index) => (
                   <div
                     key={incident.id}
-                    className={`absolute w-6 h-6 rounded-full border-2 border-white shadow-lg flex items-center justify-center text-white text-xs font-bold ${
-                      incident.type === 'robo' ? 'bg-red-500' :
-                      incident.type === 'emergencia-medica' ? 'bg-blue-500' :
-                      incident.type === 'violencia-familiar' ? 'bg-purple-500' :
-                      incident.type === 'incendio' ? 'bg-orange-500' : 'bg-gray-500'
+                    className={`absolute rounded-full border-3 border-white shadow-xl flex items-center justify-center text-white text-xs font-bold transform hover:scale-110 transition-transform duration-200 cursor-pointer ${
+                      incident.type === 'robo' ? 'bg-gradient-to-br from-red-400 to-red-600 w-8 h-8' :
+                      incident.type === 'emergencia-medica' ? 'bg-gradient-to-br from-blue-400 to-blue-600 w-8 h-8' :
+                      incident.type === 'violencia-familiar' ? 'bg-gradient-to-br from-purple-400 to-purple-600 w-8 h-8' :
+                      incident.type === 'incendio' ? 'bg-gradient-to-br from-orange-400 to-orange-600 w-8 h-8' : 'bg-gradient-to-br from-gray-400 to-gray-600 w-8 h-8'
                     }`}
                     style={{
-                      left: `${20 + (index % 5) * 15}%`,
-                      top: `${20 + Math.floor(index / 5) * 20}%`
+                      left: `${15 + (index % 6) * 12}%`,
+                      top: `${15 + Math.floor(index / 6) * 18}%`
                     }}
+                    title={`Incidente #${index + 1}: ${incident.type}`}
                   >
                     {index + 1}
                   </div>
                 ))}
+                
+                {/* Elementos decorativos para simular calles */}
+                <div className="absolute top-1/4 left-0 right-0 h-0.5 bg-gray-300/50"></div>
+                <div className="absolute top-3/4 left-0 right-0 h-0.5 bg-gray-300/50"></div>
+                <div className="absolute left-1/4 top-0 bottom-0 w-0.5 bg-gray-300/50"></div>
+                <div className="absolute left-3/4 top-0 bottom-0 w-0.5 bg-gray-300/50"></div>
               </div>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {[
-                { type: 'robo', label: 'Robos', count: incidents.filter(i => i.type === 'robo').length, color: 'bg-red-500' },
-                { type: 'emergencia-medica', label: 'Emergencias Médicas', count: incidents.filter(i => i.type === 'emergencia-medica').length, color: 'bg-blue-500' },
-                { type: 'violencia-familiar', label: 'Violencia Familiar', count: incidents.filter(i => i.type === 'violencia-familiar').length, color: 'bg-purple-500' },
-                { type: 'incendio', label: 'Incendios', count: incidents.filter(i => i.type === 'incendio').length, color: 'bg-orange-500' }
-              ].map(({ type, label, count, color }) => (
-                <div key={type} className="bg-white rounded-lg shadow p-4">
-                  <div className="flex items-center">
-                    <div className={`w-3 h-3 rounded-full ${color} mr-3`}></div>
-                    <div>
-                      <p className="text-sm font-medium text-gray-900">{label}</p>
-                      <p className="text-2xl font-bold text-gray-900">{count}</p>
+                { 
+                  type: 'robo', 
+                  label: 'Robos', 
+                  count: incidents.filter(i => i.type === 'robo').length, 
+                  color: 'bg-red-500',
+                  bgGradient: 'from-red-50 to-red-100',
+                  borderColor: 'border-red-200',
+                  icon: '🚨'
+                },
+                { 
+                  type: 'emergencia-medica', 
+                  label: 'Emergencias Médicas', 
+                  count: incidents.filter(i => i.type === 'emergencia-medica').length, 
+                  color: 'bg-blue-500',
+                  bgGradient: 'from-blue-50 to-blue-100',
+                  borderColor: 'border-blue-200',
+                  icon: '🏥'
+                },
+                { 
+                  type: 'violencia-familiar', 
+                  label: 'Violencia Familiar', 
+                  count: incidents.filter(i => i.type === 'violencia-familiar').length, 
+                  color: 'bg-purple-500',
+                  bgGradient: 'from-purple-50 to-purple-100',
+                  borderColor: 'border-purple-200',
+                  icon: '🏠'
+                },
+                { 
+                  type: 'incendio', 
+                  label: 'Incendios', 
+                  count: incidents.filter(i => i.type === 'incendio').length, 
+                  color: 'bg-orange-500',
+                  bgGradient: 'from-orange-50 to-orange-100',
+                  borderColor: 'border-orange-200',
+                  icon: '🔥'
+                }
+              ].map(({ type, label, count, color, bgGradient, borderColor, icon }) => (
+                <div key={type} className={`bg-gradient-to-br ${bgGradient} rounded-xl shadow-lg border-2 ${borderColor} p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1`}>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className={`w-12 h-12 rounded-full ${color} flex items-center justify-center text-white text-xl shadow-lg`}>
+                      {icon}
                     </div>
+                    <div className={`px-3 py-1 rounded-full text-xs font-semibold text-white ${color}`}>
+                      {count > 0 ? 'ACTIVO' : 'SIN CASOS'}
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-gray-700 mb-1">{label}</p>
+                    <p className="text-3xl font-bold text-gray-900">{count}</p>
+                    <p className="text-xs text-gray-500 mt-1">casos reportados</p>
                   </div>
                 </div>
               ))}
@@ -276,78 +348,94 @@ const IncidentReportingSystem = () => {
 
         {/* Reportar Incidente */}
         {activeTab === 'report' && (
-          <div className="max-w-2xl mx-auto">
-            <div className="bg-white rounded-lg shadow p-6">
-              <h2 className="text-xl font-semibold mb-6">Reportar Nuevo Incidente</h2>
+          <div className="max-w-3xl mx-auto">
+            <div className="bg-white rounded-xl shadow-xl p-8 border border-gray-100">
+              <div className="text-center mb-8">
+                <div className="bg-gradient-to-r from-red-500 to-red-600 rounded-full p-4 w-20 h-20 mx-auto mb-4 shadow-lg">
+                  <Plus className="w-12 h-12 text-white" />
+                </div>
+                <h2 className="text-3xl font-bold text-gray-900 mb-2">Reportar Nuevo Incidente</h2>
+                <p className="text-gray-600">Complete el formulario para reportar un incidente de emergencia</p>
+              </div>
               
-              <div className="space-y-6">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Tipo de Incidente *
-                  </label>
-                  <select
-                    value={newIncident.type}
-                    onChange={(e) => setNewIncident(prev => ({ ...prev, type: e.target.value }))}
-                    className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
-                  >
-                    <option value="">Seleccionar tipo</option>
-                    <option value="robo">Robo</option>
-                    <option value="emergencia-medica">Emergencia Médica</option>
-                    <option value="violencia-familiar">Violencia Familiar</option>
-                    <option value="incendio">Incendio</option>
-                    <option value="otro">Otro</option>
-                  </select>
-                </div>
+              <form className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-bold text-gray-700 mb-3">
+                      🚨 Tipo de Incidente *
+                    </label>
+                    <select
+                      value={newIncident.type}
+                      onChange={(e) => setNewIncident(prev => ({ ...prev, type: e.target.value }))}
+                      className="w-full border-2 border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-4 focus:ring-red-200 focus:border-red-500 transition-all duration-200 text-lg"
+                    >
+                      <option value="">🔍 Seleccionar tipo de incidente</option>
+                      <option value="robo">🚨 Robo</option>
+                      <option value="emergencia-medica">🏥 Emergencia Médica</option>
+                      <option value="violencia-familiar">🏠 Violencia Familiar</option>
+                      <option value="incendio">🔥 Incendio</option>
+                      <option value="otro">❓ Otro</option>
+                    </select>
+                  </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Descripción (Opcional)
-                  </label>
-                  <textarea
-                    value={newIncident.description}
-                    onChange={(e) => setNewIncident(prev => ({ ...prev, description: e.target.value }))}
-                    rows={3}
-                    className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
-                    placeholder="Describe brevemente el incidente..."
-                  />
-                </div>
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-bold text-gray-700 mb-3">
+                      📝 Descripción del Incidente (Opcional)
+                    </label>
+                    <textarea
+                      value={newIncident.description}
+                      onChange={(e) => setNewIncident(prev => ({ ...prev, description: e.target.value }))}
+                      rows={4}
+                      className="w-full border-2 border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-4 focus:ring-red-200 focus:border-red-500 transition-all duration-200 text-lg"
+                      placeholder="Describe brevemente los detalles del incidente..."
+                    />
+                  </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Ubicación
-                  </label>
-                  <div className="flex items-center space-x-2 p-3 bg-gray-50 rounded-md">
-                    <MapPin className="w-5 h-5 text-green-600" />
-                    <span className="text-sm text-gray-600">
-                      GPS: {newIncident.location.lat.toFixed(4)}, {newIncident.location.lng.toFixed(4)}
-                    </span>
-                    <span className="text-xs text-green-600 bg-green-100 px-2 py-1 rounded">
-                      Ubicación detectada automáticamente
-                    </span>
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-bold text-gray-700 mb-3">
+                      📍 Ubicación del Incidente
+                    </label>
+                    <div className="flex items-center space-x-3 p-4 bg-gradient-to-r from-green-50 to-blue-50 rounded-xl border-2 border-green-200">
+                      <div className="bg-green-500 rounded-full p-2">
+                        <MapPin className="w-6 h-6 text-white" />
+                      </div>
+                      <div className="flex-1">
+                        <span className="text-sm font-medium text-gray-800 block">
+                          Coordenadas GPS: {newIncident.location.lat.toFixed(4)}, {newIncident.location.lng.toFixed(4)}
+                        </span>
+                        <span className="text-xs text-green-600 bg-green-100 px-3 py-1 rounded-full inline-block mt-1">
+                          ✅ Ubicación detectada automáticamente
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="md:col-span-2">
+                    <div className="flex items-center space-x-3 p-4 bg-gray-50 rounded-xl border border-gray-200">
+                      <input
+                        type="checkbox"
+                        id="anonymous"
+                        checked={newIncident.anonymous}
+                        onChange={(e) => setNewIncident(prev => ({ ...prev, anonymous: e.target.checked }))}
+                        className="h-5 w-5 text-red-600 focus:ring-red-500 border-gray-300 rounded transform scale-125"
+                      />
+                      <label htmlFor="anonymous" className="block text-sm font-medium text-gray-900">
+                        🕶️ Enviar reporte de forma anónima
+                      </label>
+                    </div>
                   </div>
                 </div>
 
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    id="anonymous"
-                    checked={newIncident.anonymous}
-                    onChange={(e) => setNewIncident(prev => ({ ...prev, anonymous: e.target.checked }))}
-                    className="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded"
-                  />
-                  <label htmlFor="anonymous" className="ml-2 block text-sm text-gray-900">
-                    Enviar de forma anónima
-                  </label>
+                <div className="pt-6">
+                  <button
+                    onClick={handleSubmitIncident}
+                    disabled={!newIncident.type}
+                    className="w-full bg-gradient-to-r from-red-500 to-red-600 text-white py-4 px-6 rounded-xl hover:from-red-600 hover:to-red-700 focus:outline-none focus:ring-4 focus:ring-red-200 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed transform transition-all duration-200 hover:scale-105 font-bold text-lg shadow-xl"
+                  >
+                    🚨 Reportar Incidente de Emergencia
+                  </button>
                 </div>
-
-                <button
-                  onClick={handleSubmitIncident}
-                  disabled={!newIncident.type}
-                  className="w-full bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 disabled:bg-gray-300 disabled:cursor-not-allowed"
-                >
-                  Reportar Incidente
-                </button>
-              </div>
+              </form>
             </div>
           </div>
         )}
