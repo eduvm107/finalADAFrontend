@@ -388,7 +388,7 @@ const IncidentMap = ({ incidents }) => {
   }, [validIncidents]);
   
   return (
-    <div className="bg-white rounded-lg shadow p-6 fade-in">
+    <div id="main-map" className="bg-white rounded-lg shadow p-6 fade-in">
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
         <h2 className="text-xl font-semibold image-section-title">
           Mapa de Incidentes y Entidades de Emergencia

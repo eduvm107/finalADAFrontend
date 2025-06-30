@@ -7,6 +7,8 @@ import {
   deleteEmergencyEntity 
 } from '../api/endpoints';
 import { EmergencyEntity } from '../utils/emergencyEntitiesLima';
+import { useAuth } from '../hooks/useAuth';
+import LoginForm from './LoginForm';
 
 interface EmergencyEntityFormData {
   name: string;
@@ -19,6 +21,12 @@ interface EmergencyEntityFormData {
 }
 
 const EmergencyEntitiesAdmin: React.FC = () => {
+  const [authChanged, setAuthChanged] = useState(false);
+  const isAuthenticated = useAuth();
+  if (!isAuthenticated) {
+    return <LoginForm onLoginSuccess={() => setAuthChanged(!authChanged)} />;
+  }
+
   const [entities, setEntities] = useState<EmergencyEntity[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);

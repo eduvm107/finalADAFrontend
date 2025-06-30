@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { 
   Shield, Flame, Heart, Phone, Navigation, MapPin, Clock, 
   Star, Filter, RefreshCw, ExternalLink, AlertTriangle
@@ -50,6 +50,9 @@ interface NearestEntitiesProps {
   lastIncidentLocation?: { lat: number; lng: number };
 }
 
+// Contexto para cambiar la pestaña activa
+const TabContext = React.createContext({ setActiveTab: (tab: string) => {} });
+
 const NearestEntities: React.FC<NearestEntitiesProps> = ({ 
   lastIncidentType, 
   lastIncidentLocation 
@@ -60,6 +63,7 @@ const NearestEntities: React.FC<NearestEntitiesProps> = ({
   const [filterType, setFilterType] = useState<string>('all');
   const [loading, setLoading] = useState(false);
   const [coverage, setCoverage] = useState(null);
+  const tabContext = useContext(TabContext);
 
   // Usar ubicación del último incidente o ubicación actual
   const searchLat = lastIncidentLocation?.lat || latitude;
@@ -327,7 +331,23 @@ const NearestEntities: React.FC<NearestEntitiesProps> = ({
                       <span className="text-sm font-medium">{result.entity.phone}</span>
                     </button>
                     <button
-                      onClick={() => openInMaps(result.entity)}
+                      onClick={e => {
+                        e.preventDefault();
+                        if (tabContext && typeof tabContext.setActiveTab === 'function') {
+                          tabContext.setActiveTab('map');
+                          setTimeout(() => {
+                            const mapSection = document.getElementById('main-map');
+                            if (mapSection) {
+                              mapSection.scrollIntoView({ behavior: 'smooth' });
+                            }
+                          }, 300);
+                        } else {
+                          const mapSection = document.getElementById('main-map');
+                          if (mapSection) {
+                            mapSection.scrollIntoView({ behavior: 'smooth' });
+                          }
+                        }
+                      }}
                       className="flex items-center space-x-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
                     >
                       <ExternalLink className="w-4 h-4" />
